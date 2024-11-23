@@ -1,4 +1,5 @@
 					SQL
+Link: https://www.sql-practice.com/	
 
  
 EASY LEVEL
@@ -140,5 +141,61 @@ Q30. Show the province_id(s), sum of height; where the total sum of its patient'
 
 Ans: Select province_id, SUM(height) AS sum_height from patients group by province_id having SUM(height) >= 7000;
 
-Q31. 
+Q31. Show the difference between the largest weight and smallest weight for patients with the last name 'Maroni'
+
+Ans: Select  max(weight) - min(weight)  AS weight_data from patients where last_name = 'Maroni';
+
+Q32. Show all of the days of the month (1-31) and how many admission_dates occurred on that day. Sort by the day with most admissions to least admissions.
+
+Ans: select day(admission_date) AS day_number, Count(attending_doctor_id) AS number_of_admissions from admissions group by day(admission_date) order by number_of_admissions desc;
+
+Q33. Show all columns for patient_id 542's most recent admission_date.
+
+Ans: Select * from admissions where patient_id = 542 order by admission_date desc LIMIT 1;
+
+Q34. Show patient_id, attending_doctor_id, and diagnosis for admissions that match one of the two criteria:
+1. patient_id is an odd number and attending_doctor_id is either 1, 5, or 19.
+2. attending_doctor_id contains a 2 and the length of patient_id is 3 characters.
+
+Ans: select patient_id, attending_doctor_id, diagnosis from admissions WHERE (patient_id %2 != 0 AND (attending_doctor_id = 1 OR attending_doctor_id = 5 OR attending_doctor_id = 19)) OR (attending_doctor_id Like '%2%' AND (len(patient_id) = 3)) ;
+
+Q35. Show first_name, last_name, and the total number of admissions attended for each doctor.
+
+Every admission has been attended by a doctor.
+
+Ans: select first_name, last_name ,count(attending_doctor_id) AS admissions_total 
+from doctors as d 
+JOIN admissions as a 
+ON d.doctor_id = a.attending_doctor_id 
+group by d.first_name, d.last_name;
+
+Q36. For each doctor, display their id, full name, and the first and last admission date they attended.
+
+Ans: Select d.doctor_id, concat(d.first_name,' ',d.last_name) AS full_name, MIN(a.admission_date) AS first_admission_date, MAX(a.admission_date) AS last_admission_date from doctors as d 
+join admissions as a 
+ON d.doctor_id = a.attending_doctor_id 
+group by d.doctor_id, concat(d.first_name,' ',d.last_name) ;
+
+
+Q37. Display the total amount of patients for each province. Order by descending.
+
+Ans: Select province_name, Count(province_name) AS patient_count From province_names as pn JOIN patients as pa ON pn.province_id = pa.province_id group by province_name order by patient_count desc;
+
+Q38. For every admission, display the patient's full name, their admission diagnosis, and their doctor's full name who diagnosed their problem.
+
+Ans: select concat(p.first_name,' ',p.last_name) AS Patient_Name, a.diagnosis, concat(d.first_name,' ',d.last_name) AS Doctor_Name 
+from patients As p 
+JOIN admissions as a 
+ON p.patient_id = a.patient_id
+JOIN doctors As d 
+ON d.doctor_id = a.attending_doctor_id;
+
+Q39. display the first name, last name and number of duplicate patients based on their first name and last name.
+
+Ex: A patient with an identical name can be considered a duplicate.
+
+Ans: SELECT first_name, last_name, COUNT(*) AS duplicate_count FROM patients GROUP BY first_name, last_name HAVING COUNT(*) >= 2;
+
+Q40. 
+
 
