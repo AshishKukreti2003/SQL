@@ -223,6 +223,11 @@ Q41. Show patient_id, first_name, last_name from patients whose does not have an
 
 Ans: Select patient_id, first_name, last_name from patients where patient_id not IN( select patient_id from admissions);
 
+Q42, Display a single row with max_visits, min_visits, average_visits where the maximum, minimum and average number of admissions per day is calculated. Average is rounded to 2 decimal places.
+
+Ans: select MAX(op), MIN(op) , round(AVG(op),2) FROM (
+    select admission_date, count(patient_id) AS op from admissions group by admission_date );
+
   
 
 HARD LEVEL
